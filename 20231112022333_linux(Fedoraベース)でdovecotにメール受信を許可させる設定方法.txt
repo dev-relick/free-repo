@@ -1,0 +1,94 @@
+linux(Fedoraベース)でdovecotにメール受信を許可させる設定方法
+
+
+Linux（特にFedoraベースのディストリビューション）でDovecotを使用してメール受信を許可するためには、以下の手順で設定を行います。Dovecotは主にIMAPやPOP3プロトコルでメールサーバー機能を提供するためのオープンソースソフトウェアです。
+
+1. **Dovecotのインストール:**
+ まだDovecotをインストールしていない場合には、以下のコマンドを使ってインストールします。
+
+ ```bash
+ sudo dnf install dovecot
+ ```
+
+2. **Dovecotの設定:**
+ メール受信を許可するためには、Dovecotの主要な設定ファイルである`/etc/dovecot/dovecot.conf`とその他の関連ファイルを編集する必要があります。
+
+ まず、`dovecot.conf`ファイルを編集します。
+
+ ```bash
+ sudo nano /etc/dovecot/dovecot.conf
+ ```
+
+ 必要な行を探し（または追加し）以下のように設定します：
+
+ ```
+ # プロトコルの有効化（IMAPとPOP3）
+ protocols = imap pop3
+
+ # 他の設定ファイルが含まれるディレクトリの指定
+ !include conf.d/*.conf
+ ```
+
+3. **認証の設定:**
+ `/etc/dovecot/conf.d/10-auth.conf`ファイルを開きます。
+
+ ```bash
+ sudo nano /etc/dovecot/conf.d/10-auth.conf
+ ```
+
+ 次の行のコメントアウトを解除して、PLAIN テキスト認証を許可します。
+
+ ```
+ disable_plaintext_auth = no
+ auth_mechanisms = plain login
+ ```
+
+ SSL暗号化を利用しない場合は、これ以上の変更は行わないでください。ただし、セキュリティ上の理由から、SSL/TLS暗号化の使用を強く推奨します。
+
+4. **メールボックスの設定:**
+ `/etc/dovecot/conf.d/10-mail.conf`ファイルを編集して、メールボックスの場所と形式を指定します。
+
+ ```bash
+ sudo nano /etc/dovecot/conf.d/10-mail.conf
+ ```
+
+ メールボックスの設定について、適した行を以下のように設定します：
+
+ ```
+ mail_location = maildir:~/Maildir
+ ```
+
+5. **SSL/TLSの設定:**
+ `/etc/dovecot/conf.d/10-ssl.conf`ファイルを編集して、セキュリティを高めるためにSSL/TLSを有効にします。
+
+ ```bash
+ sudo nano /etc/dovecot/conf.d/10-ssl.conf
+ ```
+
+ SSL/TLSを有効にして、適切な設定を行います：
+
+ ```
+ ssl = required
+ ssl_cert = </path/to/fullchain.pem
+ ssl_key = </path/to/privkey.pem
+ ```
+
+6. **Dovecotの再起動:**
+ 設定を反映させるためにDovecotを再起動します。
+
+ ```bash
+ sudo systemctl restart dovecot
+ ```
+
+7. **ファイアウォールの設定:**
+ IMAP（デフォルトでポート143）やPOP3（デフォルトでポート110）を通過させるためのファイアウォールの設定を確認し、必要に応じてポートを開放します。
+
+ ```bash
+ sudo firewall-cmd --add-service=imap --permanent
+ sudo firewall-cmd --add-service=pop3 --permanent
+ sudo firewall-cmd --reload
+ ```
+
+ もしSSL/TLSを使用している場合には、imaps (ポート993) および pop3s (ポート995) も同様に開放する必要があります。
+
+以上で基本的なメール受信設定が完了です。これでメールクライアントを使用してDovecotサーバーに接続し、メールを受信することができるようになります。ただし、これはあくまで基本設定であり、実際の運用ではセキュリティ設定の強化、ユーザー認証の設定、スパムフィルタリング、それにロギングなどの詳細な設定が必要です。
