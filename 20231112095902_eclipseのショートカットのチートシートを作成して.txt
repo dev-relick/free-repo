@@ -1,0 +1,102 @@
+eclipseのショートカットのチートシートを作成して
+
+
+Eclipseは多機能の統合開発環境（IDE）で、多くのショートカットが存在します。以下はEclipseでよく使用されるショートカットのチートシートです。なお、以下のショートカットはEclipseのデフォルトのキーバインディングに基づきます。また、WindowsとLinuxのキー配置とMacのキー配置が違うため、Windows/Linux向けとMac向けに分けて記載しています。
+
+### Windows/Linux用のEclipseショートカットチートシート
+
+#### 編集
+- Ctrl + Space : コード補完
+- Ctrl + Shift + F : 自動フォーマット
+- Ctrl + Z : 元に戻す
+- Ctrl + Y : やり直し
+- Ctrl + X : カット
+- Ctrl + C : コピー
+- Ctrl + V : ペースト
+- Ctrl + D : 行の削除
+- Ctrl + Shift + O : インポート文の整理
+- Alt + Shift + R : 要素のリファクタリング/名前の変更
+- Ctrl + Shift + L : ショートカットの一覧表示
+
+#### 移動/検索
+- Ctrl + F : 検索/置換
+- Ctrl + G : 行へ移動
+- Ctrl + L : 特定の行へ移動
+- Ctrl + E : エディタ間で切り替え
+- Ctrl + Page Up/Page Down : タブ間で移動
+- Ctrl + O : アウトラインへ移動
+- Ctrl + Shift + G : 選択したメソッド/変数の参照を検索
+- F3 : 宣言へ移動
+- Ctrl + T : 継承ツリーを表示
+
+#### 実行/デバッグ
+- F11 : 最後に実行したアプリケーションの実行
+- Ctrl + F11 : 最後に実行したアプリケーションのデバッグ
+- F5 : ステップイン
+- F6 : ステップオーバー
+- F7 : ステップアウト
+- F8 : リゾーム
+- Ctrl + Shift + B : ブレークポイントの設定/解除
+
+#### ビュー/ウィンドウ
+- Ctrl + M : エディタ/ビューを最大化/元に戻す
+- Ctrl + Shift + X : 大文字に変換
+- Ctrl + Shift + Y : 小文字に変換
+- Ctrl + F7 : オープン中のビュー間で切り替え
+- Ctrl + F8 : パースペクティブを切り替え
+
+#### その他
+- Ctrl + 1 : クイックフィックスの表示
+- Alt + Shift + J : JavaDocコメントの追加
+- Alt + / : ワード補完
+- Alt + Enter : プロジェクト/ファイルのプロパティ
+
+### Mac用のEclipseショートカットチートシート
+
+#### 編集
+- Command + Space : コード補完
+- Command + Shift + F : 自動フォーマット
+- Command + Z : 元に戻す
+- Command + Shift + Z : やり直し
+- Command + X : カット
+- Command + C : コピー
+- Command + V : ペースト
+- Command + D : 行の削除
+- Command + Shift + O : インポート文の整理
+- Command + Option + R : 要素のリファクタリング/名前の変更
+- Command + Shift + L : ショートカットの一覧表示
+
+#### 移動/検索
+- Command + F : 検索/置換
+- Command + G : 行へ移動
+- Command + L : 特定の行へ移動
+- Command + E : エディタ間で切り替え
+- Command + Option + 上/下 : タブ間で移動
+- Command + O : アウトラインへ移動
+- Command + Shift + G : 選択したメソッド/変数の参照を検索
+- F3 : 宣言へ移動
+- Command + T : 継承ツリーを表示
+
+#### 実行/デバッグ
+- F11 : 最後に実行したアプリケーションの実行
+- Command + F11 : 最後に実行したアプリケーションのデバッグ
+- F5 : ステップイン
+- F6 : ステップオーバー
+- F7 : ステップアウト
+- F8 : リゾーム
+- Command + Shift + B : ブレークポイントの設定/解除
+
+#### ビュー/ウィンドウ
+- Command + M : エディタ/ビューを最大化/元に戻す
+- Command + Shift + X : 大文字に変換
+- Command + Shift + Y : 小文字に変換
+- Command + F7 : オープン中のビュー間で切り替え
+- Command + F8 : パースペクティブを切り替え
+
+#### その他
+- Command + 1 : クイックフィックスの表示
+- Option + Shift + J : JavaDocコメントの追加
+- Option + / : ワード補完
+- Option + Enter : プロジェクト/ファイルのプロパティ
+
+上記ショートカットは、Eclipseをより効率的に操作するための基本的なものです。実際の使用シーンや個人の作業環境によって最も便利なショートカットは異なる可能性があるため、実践しながら覚えていくのが一番です。また、Eclipseではショートカットキーをカスタマイズできるため、よりパーソナライズしたキーバインディングを設定することも可能です。
