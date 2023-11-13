@@ -1,0 +1,39 @@
+windowsでシンボリックリンクを作成する方法
+
+
+Windowsでシンボリックリンクを作成するには、コマンドプロンプトまたはPowerShellを使用します。以下の手順に従ってください。
+
+1. コマンドプロンプトまたはPowerShellを管理者権限で開きます。
+
+コマンドプロンプトを開くには、Windowsのスタートメニューを開いて「cmd」と入力し、表示された「コマンドプロンプト」を右クリックして「管理者として実行」を選択します。
+
+PowerShellを開くには、Windowsのスタートメニューを開いて「PowerShell」と入力し、表示された「Windows PowerShell」を右クリックして「管理者として実行」を選択します。
+
+2. シンボリックリンクを作成したいファイルまたはディレクトリがある場所まで移動します。
+
+ ```
+ cd /d D:\path\to\directory
+ ```
+
+3. 以下のコマンドを使用してシンボリックリンクを作成します。
+
+ファイルのシンボリックリンクを作成する場合のコマンド:
+ ```
+ mklink LinkPath TargetPath
+ ```
+
+ディレクトリのシンボリックリンクを作成する場合のコマンド:
+ ```
+ mklink /d LinkPath TargetPath
+ ```
+
+ここで、`LinkPath`はシンボリックリンクのパス（新しく作成するリンクの名前）、`TargetPath`はリンク先のファイルまたはディレクトリのパスです。
+
+例えば、`D:\data\documents`ディレクトリに`C:\Users\Username\Documents`へのシンボリックリンクを作成する場合は、以下のようにします。
+ ```
+ mklink /d D:\data\documents C:\Users\Username\Documents
+ ```
+
+このコマンドを実行すると、`D:\data\documents`は`C:\Users\Username\Documents`へのシンボリックリンクとして機能します。
+
+重要な注意点として、シンボリックリンクを作成するためには、コマンドプロンプトやPowerShellを管理者権限で実行する必要があります。また、NTFSファイルシステムでのみシンボリックリンクを使用できます。
