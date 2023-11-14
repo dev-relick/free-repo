@@ -1,0 +1,55 @@
+ExcelのVBAで対象シートのC列9行目からセルが空になるまでループし、ファイルにC列のセルの値を出力する。ファイル名はA列の同行のセル値とする
+
+
+Excel VBAで指定された動作を行うコードを次に示します。このコードは、指定されたシートのC列9行目から開始して、セルが空になるまで下にループし、それぞれの行のC列の値をファイルに出力します。ファイル名はA列の同行のセル値に基づいて設定されます。コードは、モジュール内または適切なオブジェクト（例えば、ワークシートオブジェクトやThisWorkbookオブジェクト）内のVBAエディタに挿入することができます。
+
+```vb
+Sub WriteCColumnValuesToFile()
+ Dim targetSheet As Worksheet
+ Dim r As Long ' 行のカウンター
+ Dim outputFileName As String
+ Dim outputFile As String
+ Dim fileContent As String
+ Dim fileSystemObj As Object
+ Dim textFile As Object
+ 
+ ' 使用するシートを設定します。ここでは "Sheet1" を例とします。
+ Set targetSheet = ThisWorkbook.Sheets("Sheet1")
+ 
+ ' ファイルシステムオブジェクトを作成します。
+ Set fileSystemObj = CreateObject("Scripting.FileSystemObject")
+ 
+ ' 9行目から開始し、C列のセルが空になるまでループします。
+ r = 9
+ Do While targetSheet.Cells(r, "C").Value <> ""
+ ' A列からファイル名を取得します。
+ outputFileName = targetSheet.Cells(r, "A").Value
+ 
+ ' 出力するファイルの内容をC列の値にします。
+ fileContent = targetSheet.Cells(r, "C").Value
+ 
+ ' 完全なファイルパスを設定します。マイドキュメントなどの特定のフォルダに保存する場合はパスを変更してください。
+ outputFile = ThisWorkbook.Path & "\" & outputFileName & ".txt"
+ 
+ ' ファイルを作成または上書きして、内容を書き込みます。
+ Set textFile = fileSystemObj.CreateTextFile(outputFile, True)
+ textFile.WriteLine fileContent
+ textFile.Close
+ 
+ ' 次の行に移動します。
+ r = r + 1
+ Loop
+ 
+ ' クリーンアップ
+ Set fileSystemObj = Nothing
+ Set textFile = Nothing
+ 
+ MsgBox "ファイルの書き込みが完了しました。"
+End Sub
+```
+
+このコードをそのまま使用すると、生成されたファイルはVBAコードが実行されているワークブックがあるフォルダに保存されます。別の場所に保存する場合は`outputFile`変数のパスを変更してください。
+
+このコードを実行する前に、`ThisWorkbook.Sheets("Sheet1")`の部分を対象となるシートの名前に書き換えてください。また、マイクロソフトExcelのセキュリティ設定でマクロの実行が許可されていることを確認します。
+
+実行すると、各行のC列の内容がA列の値をファイル名としたテキストファイルに出力されます。
