@@ -1,0 +1,39 @@
+Oracleのexpコマンドでentry_d列が現在日付から3年前までのデータをエクスポートする。実行環境はWindows。expdpコマンドは使用しない。
+
+
+Oracleの`exp`コマンドで特定の条件に基づくデータをエクスポートする場合、`QUERY`パラメータを使用してフィルタリングする条件を指定できます。例えば、`entry_d`列が現在の日付から3年前までのデータをエクスポートするには、以下の手順に従います。
+
+まず、`exp`コマンドを以下のような形で実行するスクリプトをWindows環境で用意します（ここではコマンドプロンプトかBATファイルで実行することを想定しています）。
+
+```bat
+@echo off
+SET username=ユーザー名
+SET password=パスワード
+SET database=データベース名
+SET tablename=テーブル名
+SET query="WHERE entry_d >= ADD_MONTHS(SYSDATE, -36)"
+SET dumpfile=export.dmp
+SET logfile=export.log
+
+exp %username%/%password%@%database% tables=%tablename% query=%query% file=%dumpfile% log=%logfile%
+
+echo Done.
+```
+
+このスクリプトの各部分は、次のように対応しています：
+
+- `%username%`はOracleデータベースにログインするためのユーザー名です。
+- `%password%`はそのユーザーのパスワードです。
+- `%database%`は接続するデータベースのサービス名です。
+- `%tablename%`はエクスポートしたいテーブルの名前です。
+- `%query%`はexpコマンドに渡すQUERYパラメータで、ここでは`entry_d`が現在日付から3年前以降のデータだけをエクスポートするという条件にしています。`ADD_MONTHS(SYSDATE, -36)`は現在日付から36ヶ月、つまり3年前の日付を計算します。
+- `%dumpfile%`はエクスポートしたデータを格納するファイル名です。
+- `%logfile%`はエクスポート操作のログを出力するファイル名です。
+
+使用するクエリ内で日付の形式やタイムゾーンの扱いに注意し、データベースの設定やテーブルの列のデータ型に適した形でクエリを記述してください。
+
+実行前に、オラクルの環境変数が適切に設定されているか確認してください。
+
+このスクリプトをBATファイルとして保存し、コマンドプロンプトで実行することによって、指定された条件に合うデータがエクスポートファイル(`export.dmp`)に出力されます。また、操作ログは`export.log`に保存されます。
+
+`exp`コマンドは古いエクスポートツールなので、新しいオラクルのバージョンでは`expdp`（Data Pumpのエクスポート）を使用するのが一般的ですが、ご指定通り`exp`コマンドの使用例を紹介しました。
