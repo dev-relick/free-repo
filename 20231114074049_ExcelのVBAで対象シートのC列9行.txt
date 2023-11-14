@@ -1,0 +1,46 @@
+ExcelのVBAで対象シートのC列9行目からセルが空になるまでループし、ファイルにC列のセルの値を出力する。ファイル名はA列の同行のセル値とする
+
+
+ExcelのVBAを使用して、特定のシートのC列のセルをループし、対応するA列のセル値をファイル名として値を出力する処理は以下のように書くことができます:
+
+```vba
+Sub OutputColumnCtoFiles()
+ Dim ws As Worksheet
+ Dim r As Long ' 行数をカウントする変数
+ Dim cellValue As String
+ Dim fileName As String
+ Dim fileFullPath As String
+ Dim fileOutputPath As String
+ 
+ ' 出力ディレクトリのパスを設定する (必要に応じて変更してください)
+ fileOutputPath = "C:\Output\"
+ 
+ ' 出力対象のワークシートを設定
+ Set ws = ThisWorkbook.Sheets("対象シート名") ' 実際のシート名に置き換える
+ 
+ ' C列の9行目から開始し、空白セルまで繰り返し処理
+ r = 9 ' 開始行番号
+ Do While ws.Cells(r, 3).Value <> "" ' C列（列番号3）が空ではない場合
+ cellValue = ws.Cells(r, 3).Value ' C列の値を取得
+ fileName = ws.Cells(r, 1).Value ' A列の値を取得（ファイル名として使用）
+ 
+ ' ファイルのフルパスを設定
+ fileFullPath = fileOutputPath & fileName & ".txt"
+ 
+ ' テキストファイルとしてC列の値を出力
+ Open fileFullPath For Output As #1
+ Print #1, cellValue
+ Close #1
+ 
+ ' 次の行へ移動
+ r = r + 1
+ Loop
+ 
+ ' 完了メッセージ
+ MsgBox "ファイルの出力が完了しました。", vbInformation
+End Sub
+```
+
+このコードは、ワークシート名が「対象シート名」と仮定していますが、該当するシート名に変更する必要があります。また、`fileOutputPath`は出力するファイルの保存先のディレクトリです。このパスも、環境に合わせて適宜変更してください。
+
+上記のコードをVBAエディタで新しいモジュールに貼り付け、必要な箇所を任意に設定した後、マクロを実行してください。それにより、C列から値を読み取り、A列の値をファイル名とするテキストファイルを出力します。
