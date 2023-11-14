@@ -1,0 +1,29 @@
+Oracleのexport処理でentry_d列が現在日付から3年前までのデータをエクスポートする
+
+
+Oracleのデータベースで特定の条件に基づいてデータをエクスポートしたい場合には、Data Pump Export (expdp) ユーティリティを使用することが一般的です。ただし、expdp は直接的なデータフィルタリングのオプションを提供していますが、特定の列の日付範囲に基づいてデータをエクスポートする機能は提供していません。代わりに、以下に説明するように TABLES パラメータと QUERY パラメータを使用して特定の条件に一致するデータをエクスポートすることができます。
+
+まず、Oracleのexpdp コマンドを使用して現在の日付から3年前までのデータをエクスポートするには、QUERY パラメータを使います。以下にコマンドの一例を示します：
+
+```bash
+expdp user_name/password@db_name \
+DUMPFILE=export_data.dmp \
+LOGFILE=export_data.log \
+TABLES=your_table_name \
+QUERY=your_table_name:\"WHERE entry_d >= TO_DATE('`date +%Y-%m-%d -d '3 years ago'`', 'YYYY-MM-DD')\"
+```
+
+このコマンドは以下のように解釈されます:
+
+- `user_name/password@db_name`: エクスポートを実行するユーザー名、パスワード、接続先データベース名を指定します。
+- `DUMPFILE=export_data.dmp`: エクスポートされたデータを保存するダンプファイルの名前を指定します。
+- `LOGFILE=export_data.log`: エクスポートのログ情報を保存するログファイルの名前を指定します。
+- `TABLES=your_table_name`: エクスポートするテーブルの名前を指定します。
+- `QUERY=your_table_name:"WHERE entry_d >= TO_DATE('date_command_output', 'YYYY-MM-DD')"`: 特定のテーブルで指定されたフィルタリング条件を指定します。ここで `entry_d` は日付をフィルタリングするためのテーブルの列名です。`'date +%Y-%m-%d -d '3 years ago''` はシェルのコマンドを使用して現在日付から3年前の日付を生成し、`TO_DATE` 関数を使用して日付をOracleの日付形式に変換します。
+
+注意点:
+- 上記のコマンドは Bash シェルでの実行を想定しています。他のシェルやWindows環境では日付の生成方法が異なるため適宜修正する必要があります。
+- サンプルでは単一のテーブルを指定していますが、必要に応じて複数テーブルに `QUERY` パラメータを適用することができます。
+- QUERY パラメータの中の条件文はエスケープが必要な場合があり、シェルやOSの違いによりエスケープ方法が変わることがあります。
+
+Oracleのバージョンや使用されているシェルによっては、コマンドの構文に変更が必要な場合があるので、適宜バージョンのマニュアルを参照してください。
