@@ -1,0 +1,4 @@
+Oracleのexpコマンドでentry_d列が現在日付から3年前までのデータをエクスポートする。実行環境はWindows。expdpコマンドは使用しない。
+
+
+Oracleの古いデ
