@@ -1,0 +1,78 @@
+指定したリストファイルを読込、そのファイルに記載されていないファイル名以外のファイルをカレントディレクトリのclassesフォルダ配下から再帰的に探し出して削除する、その後、classesフォルダ内の空のフォルダを探し出して削除するvbscriptを出力してください
+
+
+以下は、指定したリストファイルを読み込み、記載されていないファイルをカレントディレクトリのclassesフォルダ配下から再帰的に探し出して削除し、その後空のフォルダを削除するVBScriptのサンプルコードです。このスクリプトでは、`preserveListFilePath` という変数に保護するファイルリストのパスを設定し、そこに記載されているファイルを除く、その他のファイルを削除します。
+
+```vbscript
+Option Explicit
+
+Dim fso, preserveListFilePath, preserveFilesList, classesFolderPath
+
+' 保護するファイルリストのパス
+preserveListFilePath = "preserve_list.txt"
+
+' classesフォルダのパス
+classesFolderPath = "classes"
+
+' Scripting.FileSystemObjectオブジェクトの生成
+Set fso = CreateObject("Scripting.FileSystemObject")
+
+' 保護するファイルをコレクションにロード
+preserveFilesList = LoadPreserveFilesList(preserveListFilePath)
+
+' 指定パス配下でレシピに存在しないファイルを削除
+DeleteUnspecifiedFiles classesFolderPath, preserveFilesList
+
+' 空のフォルダを削除
+RemoveEmptyFolders classesFolderPath
+
+' オブジェクトの後処理
+Set fso = Nothing
+
+' 保護するファイルリストをロードする関数
+Function LoadPreserveFilesList(filePath)
+ Dim file, line, collection
+ Set collection = CreateObject("Scripting.Dictionary")
+ If fso.FileExists(filePath) Then
+ Set file = fso.OpenTextFile(filePath, 1)
+ While Not file.AtEndOfStream
+ line = file.ReadLine
+ If Not collection.Exists(line) Then
+ collection.Add line, True
+ End If
+ Wend
+ file.Close
+ End If
+ Set LoadPreserveFilesList = collection
+End Function
+
+' 指定したパス配下でレシピにないファイルを削除する関数
+Sub DeleteUnspecifiedFiles(folderPath, preserveList)
+ Dim folder, file, subFolder
+ Set folder = fso.GetFolder(folderPath)
+ For Each file In folder.Files
+ If Not preserveList.Exists(fso.BuildPath(folder.Path, file.Name)) Then
+ fso.DeleteFile(file.Path)
+ End If
+ Next
+ For Each subFolder In folder.SubFolders
+ DeleteUnspecifiedFiles(subFolder.Path, preserveList)
+ Next
+End Sub
+
+' 指定パス内の空のフォルダを削除する関数
+Sub RemoveEmptyFolders(folderPath)
+ Dim folder, subFolder
+ Set folder = fso.GetFolder(folderPath)
+ For Each subFolder In folder.SubFolders
+ RemoveEmptyFolders(subFolder.Path)
+ If subFolder.Files.Count = 0 And subFolder.SubFolders.Count = 0 Then
+ subFolder.Delete
+ End If
+ Next
+End Sub
+```
+
+上記のVBScriptでは`LoadPreserveFilesList`関数でリストファイルを読み込み、`DeleteUnspecifiedFiles`関数で指定されていないファイルを削除し、`RemoveEmptyFolders`関数を使用して空のフォルダを削除しています。
+
+スクリプトを使用する前に、`preserveListFilePath`変数をあなたの保護するファイルリストに合わせて変更してください。また、スクリプトを使用する際には予期しない削除が発生しないよう十分に注意してください。削除の操作は元に戻せないため、特に重要なファイルが削除される前にバックアップを取ることを強くお勧めします。
