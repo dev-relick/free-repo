@@ -1,0 +1,32 @@
+strComputer = "."
+Set objWMIService = GetObject("winmgmts:" _
+    & "{impersonationLevel=impersonate}!\\" & strComputer & "\root\cimv2")
+
+' ユーザー入力を受け取る
+WScript.Echo "開始日時を YYYYMMDDHHMM 形式で入力してください:"
+strStartDateTime = WScript.StdIn.ReadLine
+
+WScript.Echo "終了日時を YYYYMMDDHHMM 形式で入力してください:"
+strEndDateTime = WScript.StdIn.ReadLine
+
+' WMI クエリを作成
+strQuery = "SELECT * FROM Win32_NTLogEvent WHERE Logfile = 'System' AND TimeGenerated >= '" & strStartDateTime & "00.000000+000' AND TimeGenerated <= '" & strEndDateTime & "00.000000+000'"
+
+Set colLoggedEvents = objWMIService.ExecQuery(strQuery)
+
+' ファイルにログを書き込む
+Set objFSO = CreateObject("Scripting.FileSystemObject")
+Set objLogFile = objFSO.CreateTextFile("SystemLogs.txt", True)
+
+' ヘッダーを追加
+objLogFile.WriteLine "Category" & vbTab & "EventCode" & vbTab & "Message" & vbTab & "TimeGenerated" & vbTab & "Type" & vbTab & "User"
+
+' ログイベントを出力
+For Each objEvent in colLoggedEvents
+    objLogFile.WriteLine objEvent.Category & vbTab & objEvent.EventCode & vbTab & objEvent.Message & vbTab & objEvent.TimeGenerated & vbTab & objEvent.Type & vbTab & objEvent.User
+Next
+
+objLogFile.Close
+
+WScript.Echo "ログファイル 'SystemLogs.txt' が作成されました。"
+
