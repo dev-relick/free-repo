@@ -1,0 +1,55 @@
+Sub ExportSVNChangesWithFolders()
+    Dim svnPath As String, exportPath As String
+    Dim shell As Object
+    Dim tempFile As String
+    Dim fileNum As Integer
+    Dim line As String
+    Dim fso As Object
+    
+    ' Excelシートからパスを取得
+    svnPath = ThisWorkbook.Sheets("Sheet1").Range("A1").Value
+    exportPath = ThisWorkbook.Sheets("Sheet1").Range("B1").Value
+
+    ' ファイルシステムオブジェクトの作成
+    Set fso = CreateObject("Scripting.FileSystemObject")
+
+    ' 一時ファイルのパス
+    tempFile = Environ("Temp") & "\svn_changes.txt"
+    
+    ' 変更されたファイルのリストを生成
+    Set shell = CreateObject("WScript.Shell")
+    shell.Run "cmd /c svn status " & svnPath & " > """ & tempFile & """", 0, True
+
+    ' 一時ファイルを開く
+    fileNum = FreeFile
+    Open tempFile For Input As fileNum
+
+    ' 各行をループして、変更されたファイルをエクスポート
+    Do While Not EOF(fileNum)
+        Line Input #fileNum, line
+        If Left(line, 1) = "M" Then
+            Dim filePath As String
+            filePath = Mid(line, 9)
+            Dim fullPath As String, exportFolder As String
+            fullPath = svnPath & "\" & filePath
+            exportFolder = exportPath & "\" & fso.GetParentFolderName(filePath)
+            
+            ' 必要に応じて出力フォルダを作成
+            If Not fso.FolderExists(exportFolder) Then
+                fso.CreateFolder exportFolder
+            End If
+            
+            ' ファイルをエクスポート
+            shell.Run "cmd /c svn export -r PREV """ & fullPath & """ """ & exportFolder & "\" & fso.GetFileName(filePath) & """", 0, True
+        End If
+    Loop
+
+    ' 一時ファイルの削除
+    Close fileNum
+    fso.DeleteFile tempFile
+    
+    ' オブジェクトの解放
+    Set fso = Nothing
+    Set shell = Nothing
+End Sub
+
