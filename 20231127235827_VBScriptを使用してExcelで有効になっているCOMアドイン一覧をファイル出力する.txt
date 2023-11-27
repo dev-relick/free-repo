@@ -1,0 +1,55 @@
+VBScriptを使用してExcelで有効になっているCOMアドイン一覧をファイル出力する
+
+
+VBScriptを使用してExcelで有効になっているCOMアドインをリストアップし、その一覧をファイルに出力するには、以下のステップを実行します。
+
+1. VBScriptファイル(.vbs)を作成します。
+2. Excelアプリケーションを開き、COMアドインの状況をチェックします。
+3. 有効になっているアドインの詳細をテキストファイルに書き出します。
+4. Excelアプリケーションを閉じます。
+
+以下にVBScriptのサンプルコードを提供します。
+
+```vbscript
+Dim oExcel, oAddIn, oFSO, oTxtFile
+Dim strFilePath
+
+' 出力するテキストファイルのパス
+strFilePath = "C:\path\to\your\outputfile.txt"
+
+' FileSystemObjectのインスタンスを作成
+Set oFSO = CreateObject("Scripting.FileSystemObject")
+
+' 出力ファイルを開く（存在しなければ新規作成）
+Set oTxtFile = oFSO.CreateTextFile(strFilePath, True)
+
+' Excelアプリケーションオブジェクトを作成
+Set oExcel = CreateObject("Excel.Application")
+
+' Excelのバックグラウンド実行
+oExcel.Visible = False
+
+' COMアドインの一覧を取得し、有効なものをファイルに書き出す
+For Each oAddIn In oExcel.COMAddIns
+ If oAddIn.Connect Then
+ ' アドインが有効になっている場合、その名前をファイルに書き出す
+ oTxtFile.WriteLine("Add-In: " & oAddIn.Description & " is enabled.")
+ End If
+Next
+
+' ファイルとオブジェクトを閉じる
+oTxtFile.Close
+oExcel.Quit
+
+' オブジェクトの解放
+Set oTxtFile = Nothing
+Set oFSO = Nothing
+Set oExcel = Nothing
+
+' 処理完了をユーザーに知らせる
+MsgBox "The list of enabled COM add-ins has been written to " & strFilePath, vbInformation, "Done"
+```
+
+このコードを`.vbs`拡張子で保存し、実行することで、Excelに有効なCOMアドインの一覧が指定されたテキストファイルに出力されます。`strFilePath`変数には、出力したいファイルのフルパスを設定してください。また、Excelがインストールされている環境でのみ動作します。
+
+ファイル出力先のパスが正しいこと、そしてスクリプトを実行するユーザーに適切な権限が割り当てられていることを確認してください。実行する際には、管理者権限が必要な場合があるため、スクリプトを右クリックして「管理者として実行」を選択することを検討してください。
