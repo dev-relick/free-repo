@@ -1,0 +1,38 @@
+VBScriptを使用して、Excelで有効になっているアドインを出力することはできますか?
+
+
+はい、VBScriptを使用してExcelで有効になっているアドインを取得し、それらを出力することができます。以下はそのためのサンプルスクリプトです。
+
+```vbscript
+Option Explicit
+
+' Excel アプリケーションのインスタンスを作成します
+Dim objExcel
+Set objExcel = CreateObject("Excel.Application")
+
+' Excelの表示を無効に
+objExcel.Visible = False
+
+' 追加機能 (アドイン) コレクションをループ処理して、有効なアドインを列挙します
+Dim objAddIn
+For Each objAddIn In objExcel.AddIns
+ If objAddIn.Installed Then
+ ' アドインがインストール (つまり有効) されている場合は、名前を表示します
+ WScript.Echo "有効なアドイン: " & objAddIn.Name
+ End If
+Next
+
+' Excelを閉じます（作業を保存せず）
+objExcel.Quit
+
+' オブジェクト参照を解放します
+Set objExcel = Nothing
+```
+
+このスクリプトは以下の処理を行います:
+1. Excelのインスタンスを作成します。
+2. Excelを見えないようにします。
+3. Excelの`AddIns`コレクションをループ処理し、`Installed`プロパティが`True`に設定されている（=有効になっている）アドインの名前を出力します。
+4. Excelのインスタンスを閉じてオブジェクト参照を解放します。
+
+このスクリプトをファイルとして保存し、`.vbs`拡張子で終わるようにします（例: `ListExcelAddIns.vbs`）。スクリプトを実行するには、保存したファイルをダブルクリックするか、コマンドラインから`cscript ListExcelAddIns.vbs`のように実行します。結果はコンソールまたはメッセージボックスに出力されます。
