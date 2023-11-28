@@ -1,0 +1,33 @@
+Winodwsのコマンドプロンプトを使用して指定期間のExcelのイベントログをevtx形式で出力する
+
+
+Windowsのコマンドプロンプトを使用して指定期間のイベントログを`.evtx`形式でエクスポートするには、`wevtutil`コマンドを使います。以下にその手順を示します。
+
+1. コマンドプロンプトを管理者として開きます。
+ - スタートメニューで「cmd」と検索し、右クリックして「管理者として実行」を選択します。
+
+2. イベントログのリストを取得します。
+ ```cmd
+ wevtutil el
+ ```
+ 
+3. 対象となるイベントログのチャネル名を特定します。例えば、「Application」や「Security」などがあります。
+
+4. `wevtutil`コマンドを使用して特定の期間のログをエクスポートします。このコマンドにはフィルター機能がないため、期間指定は直接できません。ただし、全データをエクスポートし、後で別のツール（例えば、イベントビューア）を使ってフィルタリングすることができます。
+
+ 以下は、`Application`ログをエクスポートする例です。ファイル名に日付を追加することで、実行日を示すことができます。
+ ```cmd
+ wevtutil epl Application C:\path\to\output\ApplicationLog_%DATE:~-4%-%DATE:~4,2%-%DATE:~7,2%.evtx
+ ```
+ 
+ `%DATE:~-4%`は現在の年、`%DATE:~4,2%`は月、`%DATE:~7,2%`は日をコマンドプロンプトから抽出しています。出力パスは適宜、あなたの環境に合わせて変更してください。
+
+余談ですが、特定の期間を指定してイベントログをエクスポートするには、PowerShellスクリプトを使用した方が柔軟性があります。以下は指定期間のイベントログをPowerShellを使用してエクスポートする例です：
+
+```powershell
+$startDate = Get-Date "2023-01-01"
+$endDate = Get-Date "2023-01-31"
+Get-WinEvent -FilterHashtable @{LogName='Application'; StartTime=$startDate; EndTime=$endDate} | Export-Evtx -Path "C:\path\to\output\ApplicationLog_Jan2023.evtx"
+```
+
+このスクリプトでは、`Get-WinEvent`を使って2023年1月1日から2023年1月31日までの`Application`ログを取得し、`Export-Evtx`コマンドレットを使って指定のパスに`.evtx`形式で出力します。パスは実際の出力先に応じて変更してください。
