@@ -1,0 +1,26 @@
+Winodwsでコマンドプロンプトを使用してディスク容量と使用量をファイル出力する
+
+
+Windowsのコマンドプロンプトでディスクの容量と使用量を確認し、その結果をファイルに出力するにはいくつかの方法があります。ここでは2つの主な手順を紹介します。
+
+### 1. `wmic`コマンドを使用する方法
+
+コマンドプロンプトで以下のコマンドを実行します。
+
+```cmd
+wmic logicaldisk get size,freespace,caption > C:\diskinfo.txt
+```
+
+上記コマンドは、すべてのドライブの容量（`Size`）、使用可能な空き容量（`FreeSpace`）、ドライブレター（`Caption`）を表示し、その結果を `C:\diskinfo.txt` というファイルに出力します。出力ファイルのパスはお好みで変更してください。
+
+### 2. `powershell`を使用する方法
+
+コマンドプロンプトから PowerShell スクリプトを呼び出して情報を取得することもできます。
+
+```cmd
+powershell -command "Get-PSDrive -PSProvider FileSystem | Format-Table Name, Used, Free, Provider, Root | Out-File -FilePath C:\diskinfo.txt"
+```
+
+このコマンドは PowerShell スクリプトを使用して、ファイルシステムプロバイダを持つドライブの情報を取得し、適切にフォーマットして `C:\diskinfo.txt` というファイルに出力します。こちらの出力結果もお好みで変更できます。
+
+ご自身のニーズに応じてコマンドの内容を変更してください。例えば、出力するファイルのパスや、表示する情報（ドライブの総容量、使用済み容量、空き容量など）をカスタマイズすることができます。
