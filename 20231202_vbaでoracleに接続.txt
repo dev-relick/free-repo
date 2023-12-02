@@ -60,4 +60,4 @@ makefile
 Copy code
 Provider=OraOLEDB.Oracle;Data Source=SalesDB;User Id=admin;Password=admin1
 
-
+Excelには参照設定で「Microsoft ActiveX Data Objects」ライブラリが追加されていること。
