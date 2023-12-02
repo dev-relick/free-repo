@@ -49,4 +49,15 @@ End Sub
 
 
 Provider=OraOLEDB.Oracle;Data Source=MyOracleDB;User Id=myUsername;Password=myPassword;
+ここで、各部分は以下のように置き換える必要があります：
+
+MyOracleDB: 接続先のOracleデータベース名またはサービス名。
+myUsername: データベースにアクセスするためのユーザー名。
+myPassword: 上記ユーザーのパスワード。
+例えば、あなたのデータベース名が「SalesDB」で、ユーザー名が「admin」、パスワードが「admin123」の場合、接続文字列は以下のようになります：
+
+makefile
+Copy code
+Provider=OraOLEDB.Oracle;Data Source=SalesDB;User Id=admin;Password=admin1
+
 
