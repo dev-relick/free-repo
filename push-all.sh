@@ -1,10 +1,4 @@
-# 引数のチェック
-if [ "$#" -ne 1 ]; then
-    echo "使用法: $0 'コミットコメント'"
-    exit 1
-fi
-
-COMMENT="$1"
+COMMENT=$(date +"%Y%m%d%H%M%S")
 
 #source ./gpt-setting.sh
 ENVREPO=~/workspace/free-repo
