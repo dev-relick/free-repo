@@ -1,0 +1,52 @@
+Sub ExecuteSQLQuery()
+    Dim conn As Object
+    Dim rs As Object
+    Dim fld As Object
+    Dim sql As String
+    Dim connectionString As String
+    Dim row As Integer
+    Dim col As Integer
+
+    ' Oracle接続のための準備
+    Set conn = CreateObject("ADODB.Connection")
+    Set rs = CreateObject("ADODB.Recordset")
+
+    ' Sheet1のセルから情報を取得
+    sql = Sheet1.Range("A1").Value
+    connectionString = Sheet1.Range("A2").Value
+
+    ' データベースに接続
+    conn.Open connectionString
+
+    ' SQLクエリを実行
+    Set rs = conn.Execute(sql)
+
+    ' 列情報を3行目に出力
+    col = 1
+    For Each fld In rs.Fields
+        Sheet1.Cells(3, col).Value = fld.Name
+        col = col + 1
+    Next fld
+
+    ' 結果を4行目以降に出力
+    row = 4
+    While Not rs.EOF
+        col = 1
+        For Each fld In rs.Fields
+            Sheet1.Cells(row, col).Value = fld.Value
+            col = col + 1
+        Next fld
+        row = row + 1
+        rs.MoveNext
+    Wend
+
+    ' オブジェクトを解放
+    rs.Close
+    conn.Close
+    Set rs = Nothing
+    Set conn = Nothing
+End Sub
+
+
+Provider=OraOLEDB.Oracle;Data Source=MyOracleDB;User Id=myUsername;Password=myPassword;
+
