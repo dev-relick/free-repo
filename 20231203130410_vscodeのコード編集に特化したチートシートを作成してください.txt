@@ -1,0 +1,49 @@
+vscodeのコード編集に特化したチートシートを作成してください
+
+
+Visual Studio Code (VSCode)は機能が豊富で、多くのショートカットやコマンドが用意されています。以下はVSCodeを効率的に使用するための基本的なコード編集に特化したチートシートです。このリストはWindowsとmacOSの両方のキーボードショートカットを含んでいます。
+
+**基本操作**
+- 新しいファイルを開く: Ctrl+N (Windows) / Cmd+N (macOS)
+- ファイルを開く: Ctrl+O / Cmd+O
+- ファイルを保存: Ctrl+S / Cmd+S
+- ファイルを別名で保存: Ctrl+Shift+S / Cmd+Shift+S
+- 新しいウィンドウ/インスタンスを開く: Ctrl+Shift+N / Cmd+Shift+N
+- エディタを閉じる: Ctrl+W / Cmd+W
+- エディタを全て閉じる: Ctrl+K, W / Cmd+K, W
+
+**コードナビゲーション**
+- 行にジャンプ: Ctrl+G / Cmd+G
+- 次のエラーまたは警告へ移動: F8 
+- 前のエラーまたは警告へ移動: Shift+F8
+- 定義へ移動: F12 / Cmd+click
+- 定義をプレビュー: Alt+F12 / Cmd+Shift+F10
+
+**コード編集**
+- 行を切り取り: Ctrl+X / Cmd+X (選択無しで行全体)
+- 行をコピー: Ctrl+C / Cmd+C (選択無しで行全体)
+- 行をペースト: Ctrl+V / Cmd+V
+- 行のコメント切り替え: Ctrl+/ / Cmd+/
+- ブロックコメント: Shift+Alt+A / Cmd+Option+A
+- 行の移動: Alt+Up/Down / Option+Up/Down
+- 行のコピー: Alt+Shift+Up/Down / Option+Shift+Up/Down
+- 行の削除: Ctrl+Shift+K / Cmd+Shift+K
+- 単語単位での移動: Ctrl+Left/Right / Option+Left/Right
+- 単語単位での削除: Ctrl+Backspace / Option+Delete
+
+**選択と多重カーソル**
+- 単語の選択: Ctrl+D / Cmd+D
+- 同じインスタンスの全てを選択: Ctrl+Shift+L / Cmd+Shift+L
+- カーソルの追加: Alt+Click / Option+Click
+- 次の行でカーソル追加: Ctrl+Alt+Down / Cmd+Option+Down
+- 前の行でカーソル追加: Ctrl+Alt+Up / Cmd+Option+Up
+- 選択範囲を次の一致する項目へ拡張: Ctrl+Shift+Right / Cmd+Shift+Right
+- 選択範囲を前の一致する項目へ拡張: Ctrl+Shift+Left / Cmd+Shift+Left
+
+**コードの整理とリファクタリング**
+- コードのフォーマット: Shift+Alt+F / Shift+Option+F
+- コードの全体フォーマット: Ctrl+Shift+P, "format document with..." 
+- 選択した範囲でのフォーマット: Ctrl+K, Ctrl+F / Cmd+K, Cmd+F
+- リファクタリングのトリガー: Ctrl+. / Cmd+.
+
+このショートカットリストはVSCodeの基本操作とコード編集に焦点を当てていますが、VSCodeは拡張機能によって更にカスタマイズが可能であり、開発者に応じて異なるショートカットや機能が追加されることがあります。より詳細な情報や最新のショートカットはVSCodeの公式ドキュメントや設定を確認してください。
