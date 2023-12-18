@@ -1,0 +1,24 @@
+while ($true) {
+    # 現在時刻を取得
+    $currentTime = Get-Date -Format "yyyyMMddHHmmss"
+
+    # CPU使用率を取得
+    $cpuUsage = Get-Counter '\Processor(_Total)\% Processor Time' | Select-Object -ExpandProperty countersamples | Select-Object -ExpandProperty cookedvalue
+
+    # メモリ使用率を取得
+    $memUsage = Get-Counter '\Memory\% Committed Bytes In Use' | Select-Object -ExpandProperty countersamples | Select-Object -ExpandProperty cookedvalue
+
+    # ディスク使用率を取得
+    $diskUsage = Get-Counter '\LogicalDisk(_Total)\% Free Space' | Select-Object -ExpandProperty countersamples | Select-Object -ExpandProperty cookedvalue
+    $diskUsage = 100 - $diskUsage # 空き領域から使用領域へ変換
+
+    # ネットワーク負荷を取得
+    $networkLoad = Get-Counter '\Network Interface(*)\Bytes Total/sec' | Select-Object -ExpandProperty countersamples | Select-Object -ExpandProperty cookedvalue
+
+    # ファイルへ出力
+    "$currentTime`t$cpuUsage`t$memUsage`t$diskUsage`t$networkLoad" | Out-File "system_stats.txt" -Append
+
+    # 5秒待機
+    Start-Sleep -Seconds 5
+}
+
